@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="PathGuardian Telemetry Simulator">
+  <trk>
+    <name>Highway A1 Northbound Inspection Track</name>
+    <trkseg>
+      <trkpt lat="37.7749" lon="-122.4194">
+        <ele>15.2</ele>
+        <time>2026-10-10T14:30:00Z</time>
+      </trkpt>
+      <trkpt lat="37.7765" lon="-122.4178">
+        <ele>16.0</ele>
+        <time>2026-10-10T14:31:30Z</time>
+      </trkpt>
+      <trkpt lat="37.7800" lon="-122.4150">
+        <ele>18.5</ele>
+        <time>2026-10-10T14:33:00Z</time>
+      </trkpt>
+      <trkpt lat="37.7849" lon="-122.4094">
+        <ele>22.1</ele>
+        <time>2026-10-10T14:35:00Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
