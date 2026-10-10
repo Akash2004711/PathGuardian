@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3
+    container_name: pathguardian_db
+    environment:
+      POSTGRES_DB: pathguardian
+      POSTGRES_USER: pathguardian
+      POSTGRES_PASSWORD: pathguardian_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pathguardian -d pathguardian"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: pathguardian_redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pathguardian_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://pathguardian:pathguardian_secret@db:5432/pathguardian
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=supersecretkey_change_in_production_32bytes!
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./ml/weights:/app/ml/weights
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pathguardian_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
