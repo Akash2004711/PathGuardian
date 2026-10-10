@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.core.database import Base, engine
-from app.api.endpoints import health
+from app.api.endpoints import health, auth, users
 
 # Create database tables if they don't exist
 Base.metadata.create_all(bind=engine)
@@ -33,6 +33,8 @@ app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads"
 
 # Include Core API Routers
 app.include_router(health.router, prefix=settings.API_V1_STR, tags=["Health"])
+app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["Authentication"])
+app.include_router(users.router, prefix=f"{settings.API_V1_STR}/users", tags=["User Management"])
 
 @app.get("/")
 def root():
